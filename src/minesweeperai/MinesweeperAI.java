@@ -13,9 +13,11 @@ import com.sun.jna.win32.*;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -71,6 +73,26 @@ public class MinesweeperAI implements KeyListener {
         System.out.println(easyX);
         System.out.println(easyY);
         click(easyX, easyY);
+    }
+    
+    public static void captureScreen() throws AWTException 
+    {
+        Rectangle screenRect = new Rectangle(window_start_x, window_start_y, window_width, window_height);
+        BufferedImage capture;
+        capture = new Robot().createScreenCapture(screenRect);
+        int[][] result = new int[window_height][window_width];
+        
+        for (int row = 0; row < window_height; ++row) {
+            for (int col = 0; col < window_width; ++col) {
+                result[row][col] = capture.getRGB(col, row);
+                
+                int blue = result[row][col] & 0xFF;
+                int green = (result[row][col] >> 8) & 0xFF;
+                int red = (result[row][col] >> 16) & 0xFF;
+
+            }
+        }
+        
     }
     
     public static void gamePlay() throws AWTException
